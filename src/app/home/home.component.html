@@ -1,0 +1,273 @@
+<div class="container">
+  <!--Display weather near UMN-->
+  <div>
+    <h1 class="text-center mt-sm-4">Weather Near UMN</h1>
+    <div class="row justify-content-center favorite-section">
+      <!--Display for weather near UMN-->
+      <h4 class="text-center" *ngIf="nearUMN">Kelapa Dua</h4>
+      <div class="row">
+        <div class="col-sm-3 mt-sm-2">
+          <div class="card card-view">
+            <div class="card-body">
+              <h5 class="card-title">Temperatur In Celcius</h5>
+              <p class="card-text" *ngIf="nearUMN">
+                {{ nearUMN.main.temp - 273 }}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3 mt-sm-2">
+          <div class="card card-view">
+            <div class="card-body">
+              <h5 class="card-title">Maximal Temperatur In Celcius</h5>
+              <p class="card-text" *ngIf="nearUMN">
+                {{ nearUMN.main.temp_max - 273 }}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3 mt-sm-2">
+          <div class="card card-view">
+            <div class="card-body">
+              <h5 class="card-title">Minimal Temperatur In Celcius</h5>
+              <p class="card-text" *ngIf="nearUMN">
+                {{ nearUMN.main.temp_min - 273 }}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3 mt-sm-2">
+          <div class="card card-view">
+            <div class="card-body">
+              <h5 class="card-title">today's weather</h5>
+              <p class="card-text" *ngIf="nearUMN">
+                {{ nearUMN.weather[0].main }} |
+                {{ nearUMN.weather[0].description }}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3 mt-sm-2">
+          <div class="card card-view">
+            <div class="card-body">
+              <h5 class="card-title">Humidity</h5>
+              <p class="card-text" *ngIf="nearUMN">
+                {{ nearUMN.main.humidity }}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3 mt-sm-2">
+          <div class="card card-view">
+            <div class="card-body">
+              <h5 class="card-title">Wind Speed</h5>
+              <p class="card-text" *ngIf="nearUMN">{{ nearUMN.wind.speed }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3 mt-sm-2">
+          <div class="card card-view">
+            <div class="card-body">
+              <h5 class="card-title">Visibility</h5>
+              <p class="card-text" *ngIf="nearUMN">{{ nearUMN.visibility }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3 mt-sm-2">
+          <div class="card card-view">
+            <div class="card-body">
+              <h5 class="card-title">Country</h5>
+              <p class="card-text" *ngIf="nearUMN">{{ nearUMN.sys.country }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--Display search weather based on city-->
+    <h1 class="text-center mt-sm-4">Search Weather Based on City</h1>
+    <div class="row justify-content-center">
+      <div class="col-sm-6">
+        <div class="input-group mb-3">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter city name"
+            aria-label="Recipient's username"
+            aria-describedby="button-addon2"
+            value="Tangerang"
+            #keyWord
+          />
+          <div class="input-group-append">
+            <button
+              class="btn btn-outline-secondary"
+              type="button"
+              id="button-addon2"
+              (click)="searchWeather(keyWord.value)"
+            >
+              Search
+            </button>
+          </div>
+          <div class="input-group-append">
+            <button
+              class="btn btn-outline-secondary"
+              type="button"
+              id="button-addon2"
+              (click)="favoriteWeather(keyWord.value)"
+            >
+              Favorite
+            </button>
+          </div>
+        </div>
+      </div>
+      <!--Alert if the keyword is not found or invalid-->
+      <div class="alert alert-danger" role="alert" *ngIf="error">
+        Error the keyword is {{ err }}
+      </div>
+    </div>
+
+    <!--Display for searched city-->
+    <h4 class="text-center" *ngIf="weather">{{ weather.name }}</h4>
+    <div class="row">
+      <div class="col-sm-3 mt-sm-2">
+        <div class="card card-view">
+          <div class="card-body">
+            <h5 class="card-title">Temperatur In Celcius</h5>
+            <p class="card-text" *ngIf="weather">
+              {{ weather.main.temp - 273 }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-3 mt-sm-2">
+        <div class="card card-view">
+          <div class="card-body">
+            <h5 class="card-title">Maximal Temperatur In Celcius</h5>
+            <p class="card-text" *ngIf="weather">
+              {{ weather.main.temp_max - 273 }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-3 mt-sm-2">
+        <div class="card card-view">
+          <div class="card-body">
+            <h5 class="card-title">Minimal Temperatur In Celcius</h5>
+            <p class="card-text" *ngIf="weather">
+              {{ weather.main.temp_min - 273 }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-3 mt-sm-2">
+        <div class="card card-view">
+          <div class="card-body">
+            <h5 class="card-title">today's weather</h5>
+            <p class="card-text" *ngIf="weather">
+              {{ weather.weather[0].main }} |
+              {{ weather.weather[0].description }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-3 mt-sm-2">
+        <div class="card card-view">
+          <div class="card-body">
+            <h5 class="card-title">Humidity</h5>
+            <p class="card-text" *ngIf="weather">{{ weather.main.humidity }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-3 mt-sm-2">
+        <div class="card card-view">
+          <div class="card-body">
+            <h5 class="card-title">Wind Speed</h5>
+            <p class="card-text" *ngIf="weather">{{ weather.wind.speed }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-3 mt-sm-2">
+        <div class="card card-view">
+          <div class="card-body">
+            <h5 class="card-title">Visibility</h5>
+            <p class="card-text" *ngIf="weather">{{ weather.visibility }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-3 mt-sm-2">
+        <div class="card card-view">
+          <div class="card-body">
+            <h5 class="card-title">Country</h5>
+            <p class="card-text" *ngIf="weather">{{ weather.sys.country }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br /><br /><br />
+
+    <!--Display for Favorites Weather-->
+    <h4 class="text-center">Your Favorites Weather</h4>
+    <div class="favorite-section">
+      <div class="row">
+        <div
+          class="col-sm-3 mt-sm-2"
+          *ngFor="let favorite of favorites; let indexOfelement = index"
+        >
+          <div class="card card-view">
+            <div class="card-body">
+              <div class="remove-icon">
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  (click)="removeFavorite(indexOfelement)"
+                >
+                  x
+                </button>
+              </div>
+              <h5 class="card-title">{{ favorite.name }}</h5>
+              <p class="card-text">{{ favorite.weather[0].description }}</p>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="noFavorite">
+          <div class="card card-view">
+            <div class="card-body">
+              <h5 class="card-title">Add your Favorite Weather!</h5>
+              <p class="card-text">
+                You currently don't have any favorie weather
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--Display for Another City-->
+    <h3 class="text-center">Another City</h3>
+    <div class="row">
+      <div class="col-sm-3 mt-sm-2" *ngFor="let current of currentWeathers">
+        <div class="card card-view">
+          <div class="card-body">
+            <h5 class="card-title">{{ current.name }}</h5>
+            <p class="card-text">{{ current.weather[0].description }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br /><br />
+
+  <!-- <p>home works!</p>
+<p *ngIf="weather">
+  {{ weather | json }}
+</p>
+<p *ngIf="weather">{{ weather.visibility }}</p>
+
+<p *ngFor="let favorite of favorites">
+  {{ favorite.coord.lat }}
+</p>
+
+<p *ngFor="let current of currentWeathers">
+  {{ current.name }} - {{ current.weather[0].description }}
+</p> -->
+</div>
